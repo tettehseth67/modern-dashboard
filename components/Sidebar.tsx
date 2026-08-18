@@ -70,7 +70,7 @@ export default function Sidebar() {
                             : "text-slate-400 hover:text-white hover:bg-slate-700/40"
                         }`}
                 >
-                    Invoices
+                    Financial Ledger
                 </Link>
             </nav>
 
