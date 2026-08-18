@@ -123,7 +123,7 @@ export default function StudentRosterPage() {
     });
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 p-3">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-800 pb-5">
                 <div>
                     <h1 className="text-2xl font-bold text-slate-100">
@@ -147,8 +147,8 @@ export default function StudentRosterPage() {
             </div>
 
             {/* Filter Tabs Strip */}
-            <div className="flex flex-row justify-between">
-                <div className="flex gap-2 p-1 bg-slate-800/60 border border-slate-700/60 rounded-xl w-fit">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+                <div className="flex gap-2 p-1 bg-slate-800/60 border border-slate-700/60 rounded-xl  text-center items-center justify-center w-full md:w-72 lg:w-fit">
                     {(["All", "Active", "Pending", "Suspended"] as const).map((tab) => (
                         <button
                             type="button"
@@ -167,87 +167,113 @@ export default function StudentRosterPage() {
                     <button
                         type="button"
                         onClick={() => setIsModalOpen(true)}
-                        className="px-4 py-1 bg-blue-600 hover:bg-blue-500 font-medium text-sm rounded-lg transition-colors shadow-lg shadow-blue-600/10 cursor-pointer"
+                        className="w-full md:w-72 px-4 py-2 mt-4 bg-blue-600 hover:bg-blue-500 font-medium text-sm rounded-lg transition-colors shadow-lg shadow-blue-600/10 cursor-pointer"
                     >
                         Add Student
                     </button>
                 </div>
             </div>
             {/* Master Data Grid Container Card */}
-            <div className="bg-slate-800 border border-slate-700 rounded-xl overflow-hidden shadow-xl">
-                <div className="grid grid-cols-6 gap-4 bg-slate-700/50 p-4 text-xs font-semibold uppercase tracking-wider text-slate-400 border-b border-slate-700">
-                    <div>System ID</div>
-                    <div>Student Profile</div>
-                    <div>Course Track</div>
-                    <div>Status</div>
-                    <div>Enrollment Date</div>
-                    <div className="text-right">Actions</div>
-                </div>
+            <div className="bg-slate-800 rounded-lg border border-slate-700 overflow-hidden shadow-xl">
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left">
+                        <thead className="bg-slate-700">
+                            <tr>
+                                <th className="px-6 py-4 text-sm font-medium text-slate-300">
+                                    System ID
+                                </th>
+                                <th className="px-6 py-4 text-sm font-medium text-slate-300">
+                                    Student Profile
+                                </th>
+                                <th className="px-6 py-4 text-sm font-medium text-slate-300">
+                                    Course Track
+                                </th>
+                                <th className="px-6 py-4 text-sm font-medium text-slate-300">
+                                    Status
+                                </th>
+                                <th className="px-6 py-4 text-sm font-medium text-slate-300">
+                                    Enrollment Date
+                                </th>
+                                <th className="px-6 py-4 text-sm font-medium text-slate-300">
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-700">
+                            {/* 5. Conditional Loading Visual Fallback Block */}
+                            {isLoading ? (
+                                <tr>
+                                    <td
+                                        colSpan={6}
+                                        className="px-6 py-8 text-center text-slate-400"
+                                    >
+                                        <div className="flex items-center justify-center gap-2">
+                                            <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+                                            Establishing live handshake with cloud data nodes...
+                                        </div>
+                                    </td>
+                                </tr>
+                            ) : filteredStudents.length > 0 ? (
+                                filteredStudents.map((student) => (
+                                    <tr
+                                        key={student.id}
+                                        className="p-4 hover:bg-slate-700/30 transition-colors"
+                                    >
+                                        <td className="px-6 py-4 text-blue-400 font-mono text-xs font-semibold">
+                                            {student.id}
+                                        </td>
+                                        {/* Column 2: Personal Profile Row Block */}
+                                        <td className="px-6 py-4">
+                                            <Link
+                                                href={`/students/${student.id}`} // Uses backticks to inject the matching ID on the fly
+                                                className="font-medium text-slate-200 hover:text-blue-400 hover:underline transition-all block cursor-pointer z-10"
+                                            >
+                                                {student.name}
+                                            </Link>
+                                            <span className="text-xs text-slate-400 block">
+                                                {student.email}
+                                            </span>
+                                        </td>
 
-                <div className="divide-y divide-slate-700">
-                    {/* 5. Conditional Loading Visual Fallback Block */}
-                    {isLoading ? (
-                        <div className="p-12 text-center text-sm text-slate-400 flex items-center justify-center gap-3">
-                            <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
-                            Establishing live handshake with cloud data nodes...
-                        </div>
-                    ) : filteredStudents.length > 0 ? (
-                        filteredStudents.map((student) => (
-                            <div
-                                key={student.id}
-                                className="grid grid-cols-6 gap-4 p-4 text-sm items-center hover:bg-slate-700/20 transition-colors"
-                            >
-                                <div className="font-mono text-xs font-semibold text-blue-400">
-                                    {student.id}
-                                </div>
-                                {/* Column 2: Personal Profile Row Block */}
-                                <div>
-                                    <Link
-                                        href={`/students/${student.id}`} // Uses backticks to inject the matching ID on the fly
-                                        className="font-medium text-slate-200 hover:text-blue-400 hover:underline transition-all block cursor-pointer z-10"
-                                    >
-                                        {student.name}
-                                    </Link>
-                                    <span className="text-xs text-slate-400 block">
-                                        {student.email}
-                                    </span>
-                                </div>
-
-                                <div className="text-slate-300">{student.course}</div>
-                                <div>
-                                    <span
-                                        className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-medium ${student.status === "Active"
-                                                ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                                                : student.status === "Pending"
-                                                    ? "bg-amber-500/10 text-amber-400 border border-amber-500/20"
-                                                    : "bg-rose-500/10 text-rose-400 border border-rose-500/20"
-                                            }`}
-                                    >
-                                        {student.status}
-                                    </span>
-                                </div>
-                                <div className="text-slate-400 font-mono text-xs">
-                                    {student.enrollmentDate}
-                                </div>
-                                <div className="text-right">
-                                    <button
-                                        type="button"
-                                        onClick={() => handleDeleteStudent(student.id)}
-                                        className="px-2.5 py-1 text-xs font-medium bg-rose-500/10 text-rose-400 border border-rose-500/20 rounded-md hover:bg-rose-500 hover:text-white transition-all cursor-pointer"
-                                    >
-                                        Delete
-                                    </button>
-                                </div>
-                            </div>
-                        ))
-                    ) : (
-                        <div className="p-12 text-center text-sm text-slate-500">
-                            No matching student profile logs identified in cloud storage.
-                        </div>
-                    )}
+                                        <td className="text-slate-300 px-6 py-4">
+                                            {student.course}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            <span
+                                                className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-medium ${student.status === "Active"
+                                                        ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                                                        : student.status === "Pending"
+                                                            ? "bg-amber-500/10 text-amber-400 border border-amber-500/20"
+                                                            : "bg-rose-500/10 text-rose-400 border border-rose-500/20"
+                                                    }`}
+                                            >
+                                                {student.status}
+                                            </span>
+                                        </td>
+                                        <td className="text-slate-400 font-mono text-x px-6 py-4">
+                                            {student.enrollmentDate}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            <button
+                                                type="button"
+                                                onClick={() => handleDeleteStudent(student.id)}
+                                                className="px-2.5 py-1 text-xs font-medium bg-rose-500/10 text-rose-400 border border-rose-500/20 rounded-md hover:bg-rose-500 hover:text-white transition-all cursor-pointer"
+                                            >
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr className="p-12 text-center text-sm text-slate-500">
+                                    No matching student profile logs identified in cloud
+                                    storage.
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
                 </div>
             </div>
-
             {/* Interactive Modal Form Popup Container Layout */}
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fade-in">

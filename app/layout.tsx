@@ -11,13 +11,22 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en">
-      <body className="min-h-full flex flex-row">
-        {/* Mount our sidebar so it locks in place permanently */}
-        <Sidebar />
+    <html lang="en" className="dark">
+      <body className="bg-slate-900 text-slate-100 antialiased min-h-full">
+        {/* 
+          RESPONSIVE FRAME WRAPPER:
+          - Stacks vertically (flex-col) on mobile viewports.
+          - Locks side-by-side (md:flex-row) on tablet monitors and up (768px+).
+        */}
+        <div className="flex flex-col md:flex-row min-h-screen w-full">
+          {/* Mount our sidebar so it locks in place permanently */}
+          <Sidebar />
 
-        {/* This main frame handles our shifting sub-pages natively */}
-        <main className="flex-1 p-8">{children}</main>
+          {/* This main frame handles our shifting sub-pages natively */}
+          <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto w-full max-w-7xl mx-auto">
+            <div className="bg-slate-900 rounded-2xl min-h-full">{children}</div>
+          </main>
+        </div>
       </body>
     </html>
   );

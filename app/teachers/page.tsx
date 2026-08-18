@@ -81,7 +81,7 @@ export default function TeacherDirectoryPage() {
   });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-3">
       {/* Header Navigation Panel */}
       <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-800 pb-5 gap-4">
         <div>
@@ -152,7 +152,7 @@ export default function TeacherDirectoryPage() {
           <div>Instructor Profile</div>
           <div>Assigned Subject Track</div>
           <div>System Access Status</div>
-          <div className="text-right">Roster Actions</div>
+          <div className="text-right hidden md:block">Roster Actions</div>
         </div>
 
         <div className="divide-y divide-slate-700">
@@ -165,7 +165,7 @@ export default function TeacherDirectoryPage() {
             filteredTeachers.map((teacher) => (
               <div
                 key={teacher.id}
-                className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 text-sm items-center hover:bg-slate-700/20 transition-colors"
+                className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-4 p-4 text-sm items-center hover:bg-slate-700/20 transition-colors"
               >
                 {/* Profile Identity Col */}
                 <div className="flex items-center gap-3">
@@ -214,6 +214,7 @@ export default function TeacherDirectoryPage() {
                     Actions:{" "}
                   </span>
                   <button
+                    type="button"
                     onClick={() => handleDeleteTeacher(teacher.id)}
                     className="p-1.5 text-rose-400 hover:text-white hover:bg-rose-600 rounded-lg transition-all cursor-pointer inline-flex items-center justify-center"
                   >

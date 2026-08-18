@@ -2,23 +2,30 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-
+import { LayoutDashboard } from 'lucide-react';
 
 export default function Sidebar() {
     const pathname = usePathname()
     return (
-        <aside className="w-64 min-h-screen bg-slate-800 border-r border-slate-700 p-6 flex flex-col text-slate-300">
-            {/* Dashboard Bran Header */}
-            <div className="mb-8">
-                <h2 className="text-xl font-bold text-white tracking-tight">
-                    Admin Portal
-                </h2>
-                <span className="text-xs text-blue-400 font-medium">
-                    v1.0 Basline
-                </span>
+        <aside className="w-full md:w-64 bg-slate-800 border-b md:border-b-0 md:border-r border-slate-700/80 p-4 md:p-6 flex flex-col md:justify-start justify-between shrink-0">
+            {/* Top Identity Branding Badge */}
+            <div className="flex items-center justify-between md:mb-8 border-b border-transparent md:border-slate-700/60 md:pb-4 pb-0">
+                <div className="flex items-center gap-2">
+                    <div className="p-2 bg-blue-500/10 text-blue-400 rounded-lg">
+                        <LayoutDashboard className="w-5 h-5" />
+                    </div>
+                    <div>
+                        <h1 className="font-bold text-sm text-slate-100 tracking-tight leading-none">
+                            EduSuite
+                        </h1>
+                        <span className="text-[10px] text-slate-500 font-mono tracking-wider uppercase mt-1 inline-block">
+                            v1.0 Core
+                        </span>
+                    </div>
+                </div>
             </div>
             {/* Navigation Layout List */}
-            <nav className="flex-1 space-y-2">
+            <nav className="flex flex-row md:flex-col gap-1.5 overflow-x-auto md:overflow-x-visible md:py-0 py-3 scrollbar-none">
                 <Link
                     href="/"
                     className={`w-full text-left px-4 py-2.5 rounded-lg transition-all font-medium block ${pathname === "/"
@@ -54,7 +61,7 @@ export default function Sidebar() {
                             : "text-slate-400 hover:text-white hover:bg-slate-700/40"
                         }`}
                 >
-                    Teacher
+                    Teacher 
                 </Link>
                 <Link
                     href="/invoices"
