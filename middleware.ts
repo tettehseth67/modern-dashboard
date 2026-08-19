@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
-import { createClient } from "@supabase/supabase-js"
 
-export async function middleware(request: NextRequest) {
+export function middleware(request: NextRequest) {
     const currentUrlPath = request.nextUrl.pathname
 
-    // 1. FAST PASS ROAD: Always let login pages and backend n8n API handlers pass instantly
+    // 1. FAST PASS ROAD: Always let login portals and automated n8n routes pass instantly
     if (
         currentUrlPath.startsWith("/login") ||
         currentUrlPath.startsWith("/api/save-panel") ||
@@ -14,27 +13,34 @@ export async function middleware(request: NextRequest) {
         return NextResponse.next()
     }
 
-    // 2. Initialize a fast, direct server-side connection client
-    const supabase = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL || "https://supabase.co",
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVsYm90aXhyYmtvcnlybXF3aHZ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY4MzAwMzMsImV4cCI6MjEwMjQwNjAzM30.pAJUVVCT1NTBEk6mx1x1o4JCk_knh0I8WgSQIpesd34"
-    )
+    // 2. PARSE THE HOSTNAME TO LOCATE THE EXCLUSIVELY TYPED COOKIE HEADER
+    // Supabase saves cookie files locally using your project's unique reference ID token string.
+    const supabaseProjectUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://supabase.co"
 
-    // 3. Extract the raw session chunk from the basic browser cookies pool
-    // This bypasses the heavy @supabase/ssr cookie manager completely!
-    const authCookieName = `sb-${new URL(process.env.NEXT_PUBLIC_SUPABASE_URL || "").hostname.split('.')[0]}-auth-token`
-    const tokenSession = request.cookies.get(authCookieName)?.value
+    let projectId = "ulbotixrbkoryrmqwhvx" // clean fallback anchor
+    try {
+        const hostname = new URL(supabaseProjectUrl).hostname
+        projectId = hostname.split(".")[0]
+    } catch {
+        // Falls back to your verified project ID string unhindered
+    }
 
-    // 🛡️ SECURITY SHIELD GATE:
-    // If no auth token session is present in the browser data banks,
-    // bounce them straight to the entry gate.
-    if (!tokenSession) {
+    // 3. TARGET THE EXACT COOKIE NAME PATTERN REQUIRED BY NEXT.JS AND SUPABASE AUTH
+    const targetCookieName = `sb-${projectId}-auth-token`
+    const activeSessionToken = request.cookies.get(targetCookieName)?.value
+
+    // 🛡️ THE EDGE RUNTIME GATE:
+    // If no auth token cookie session chunk is found in the browser records pool,
+    // intercept the connection line and send them right back to the admin entryway!
+    if (!activeSessionToken) {
+        console.log("🔒 MIDDLEWARE INTERCEPT: Redirecting unauthenticated request to /login")
         return NextResponse.redirect(new URL("/login", request.url))
     }
 
     return NextResponse.next()
 }
 
+// Ensure the matcher ignores images, styles, and internal next asset engines
 export const config = {
     matcher: [
         "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
