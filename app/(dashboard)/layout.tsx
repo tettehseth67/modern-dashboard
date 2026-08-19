@@ -16,7 +16,7 @@ export default function DashboardLayout({
 }) {
     return (
         <div className="flex flex-col md:flex-row min-h-screen w-full">
-            {/* THE SIDEBAR NAVIGATION PANEL (Only loads inside the dashboard route group!) */}
+            {/* THE SIDEBAR NAVIGATION PANEL */}
             <aside className="w-full md:w-64 bg-slate-800 border-b md:border-b-0 md:border-r border-slate-700/80 p-4 md:p-6 flex flex-col md:justify-start justify-between shrink-0">
                 <div className="flex items-center justify-between md:mb-8 border-b border-transparent md:border-slate-700/60 md:pb-4 pb-0">
                     <div className="flex items-center gap-2">
