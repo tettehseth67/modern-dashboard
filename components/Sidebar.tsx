@@ -61,7 +61,16 @@ export default function Sidebar() {
                             : "text-slate-400 hover:text-white hover:bg-slate-700/40"
                         }`}
                 >
-                    Teacher 
+                    Teacher
+                </Link>
+                <Link
+                    href="/attedance"
+                    className={`w-full text-left px-4 py-2.5 rounded-lg font-medium transition-all block ${pathname === "/attendance"
+                            ? "bg-blue-600 text-white shadow-md shadow-blue-600/10"
+                            : "text-slate-400 hover:text-white hover:bg-slate-700/40"
+                        }`}
+                >
+                    Daily Attendance Roster
                 </Link>
                 <Link
                     href="/invoices"
