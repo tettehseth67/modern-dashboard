@@ -74,7 +74,7 @@ export default function CoursesCatalogPage() {
       {/* Top Navigation Header */}
       <div className="border-b border-slate-800 pb-3">
         <Link
-          href="/"
+          href="/dashboard"
           className="text-xs text-blue-400 hover:underline flex items-center gap-1 mb-2"
         >
           <ArrowLeft className="w-3 h-3" /> Back to Dashboard Overview

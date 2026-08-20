@@ -2,25 +2,24 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { ArrowLeft } from "lucide-react";
 import { supabase } from "@/utils/supabase"; // Import our cloud database client bridge
 import { Student } from "@/types/dashboard";
+
+type StudentStatus = "All" | "Active" | "Pending" | "Suspended";
 
 export default function StudentRosterPage() {
     // 1. Initialize our states. Start with an empty array and loading set to true
     const [students, setStudents] = useState<Student[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState("");
-    const [activeStatusTab, setActiveStatusTab] = useState<
-        "All" | "Active" | "Pending" | "Suspended"
-    >("All");
+    const [activeStatusTab, setActiveStatusTab] = useState<StudentStatus>("All");
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newName, setNewName] = useState("");
     const [newEmail, setNewEmail] = useState("");
     const [newCourse, setNewCourse] = useState("Web Development Core");
-    const [newStatus, setNewStatus] = useState<
-        "All" | "Active" | "Pending" | "Suspended"
-    >("All");
+    const [newStatus, setNewStatus] = useState<StudentStatus>("All");
 
     const handleAddStudent = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -126,6 +125,12 @@ export default function StudentRosterPage() {
         <div className="space-y-6 p-3">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-800 pb-5">
                 <div>
+                    <Link
+                        href="/dashboard"
+                        className="text-xs text-blue-400 hover:underline flex items-center gap-1 mb-2"
+                    >
+                        <ArrowLeft className="w-3 h-3" /> Back to Workspace Summary
+                    </Link>
                     <h1 className="text-2xl font-bold text-slate-100">
                         Live Student Registry
                     </h1>

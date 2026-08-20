@@ -86,7 +86,7 @@ export default function TeacherDirectoryPage() {
       <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-800 pb-5 gap-4">
         <div>
           <Link
-            href="/"
+            href="/dashboard"
             className="text-xs text-blue-400 hover:underline flex items-center gap-1 mb-2"
           >
             <ArrowLeft className="w-3 h-3" /> Back to Workspace Summary

@@ -87,7 +87,7 @@ export default function InvoiceLedger() {
     <div className="p-6 bg-slate-900 min-h-screen">
       <div className="mb-4">
         <Link
-          href="/"
+          href="/dashboard"
           className="text-xs text-blue-400 hover:underline flex items-center gap-1"
         >
           ← Back to Workspace Summary
