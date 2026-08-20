@@ -7,16 +7,17 @@ import {
     FileText,
     UserSquare2,
     LayoutDashboard,
-    Calendar
+    Calendar,
 } from "lucide-react";
 
-export default function DashboardLayout({
+export default function OpenDashboardLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
+    // 🌟 ZERO SECURITY CHECKS: Draws the sidebar layout instantly for everyone!
     return (
-        <div className="flex flex-col md:flex-row min-h-screen w-full">
+        <div className="flex flex-col md:flex-row min-h-screen w-full bg-slate-900 text-slate-100">
             {/* THE SIDEBAR NAVIGATION PANEL */}
             <aside className="w-full md:w-64 bg-slate-800 border-b md:border-b-0 md:border-r border-slate-700/80 p-4 md:p-6 flex flex-col md:justify-start justify-between shrink-0">
                 <div className="flex items-center justify-between md:mb-8 border-b border-transparent md:border-slate-700/60 md:pb-4 pb-0">
@@ -37,6 +38,13 @@ export default function DashboardLayout({
 
                 <nav className="flex flex-row md:flex-col gap-1.5 overflow-x-auto md:overflow-x-visible md:py-0 py-3 scrollbar-none">
                     <Link
+                        href="/dashboard"
+                        className="flex items-center gap-3 px-3 py-2 text-xs font-semibold rounded-lg text-slate-300 hover:text-slate-100 hover:bg-slate-700/50 transition-all whitespace-nowrap"
+                    >
+                        <LayoutDashboard className="w-4 h-4 text-slate-400" />
+                        <span>Overview Center</span>
+                    </Link>
+                    <Link
                         href="/students"
                         className="flex items-center gap-3 px-3 py-2 text-xs font-semibold rounded-lg text-slate-300 hover:text-slate-100 hover:bg-slate-700/50 transition-all whitespace-nowrap"
                     >
@@ -45,7 +53,7 @@ export default function DashboardLayout({
                     </Link>
                     <Link
                         href="/attendance"
-                        className="flex items-center gap-3 px-3 py-2 text-xs font-semibold rounded-lg text-slate-300 hover:text-slate-100 hover:bg-slate-700/50 border border-transparent hover:border-slate-700 transition-all whitespace-nowrap"
+                        className="flex items-center gap-3 px-3 py-2 text-xs font-semibold rounded-lg text-slate-300 hover:text-slate-100 hover:bg-slate-700/50 transition-all whitespace-nowrap"
                     >
                         <Calendar className="w-4 h-4 text-blue-400" />
                         <span>Daily Attendance</span>
