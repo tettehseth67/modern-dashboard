@@ -7,6 +7,7 @@ import {
     FileText,
     UserSquare2,
     LayoutDashboard,
+    Calendar
 } from "lucide-react";
 
 export default function DashboardLayout({
@@ -41,6 +42,13 @@ export default function DashboardLayout({
                     >
                         <Users className="w-4 h-4 text-slate-400" />
                         <span>Student Roster</span>
+                    </Link>
+                    <Link
+                        href="/attendance"
+                        className="flex items-center gap-3 px-3 py-2 text-xs font-semibold rounded-lg text-slate-300 hover:text-slate-100 hover:bg-slate-700/50 border border-transparent hover:border-slate-700 transition-all whitespace-nowrap"
+                    >
+                        <Calendar className="w-4 h-4 text-blue-400" />
+                        <span>Daily Attendance</span>
                     </Link>
                     <Link
                         href="/courses"

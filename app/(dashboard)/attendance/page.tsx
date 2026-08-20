@@ -29,38 +29,47 @@ export default function DailyAttendancePage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isSaving, setIsSaving] = useState(false);
 
-  // 1. Asynchronous Consolidated Cloud Roster Fetcher
+  // Inside app/(dashboard)/attendance/page.tsx -> fetchAttendanceRoster function block
+
   const fetchAttendanceRoster = async () => {
     try {
       setIsLoading(true);
 
-      // Pull core active student rows to build our live tracking log
+      // REMOVED THE RIGID .eq("status", "Active") LIMIT BLOCK!
+      // This fetches all available student rows from your table automatically
       const { data: students, error: studentErr } = await supabase
         .from("students")
-        .select("id, name")
-        .eq("status", "Active");
+        .select("id, name, status");
 
       if (studentErr) throw studentErr;
 
-      // Map profiles into reactive component tracking status objects
+      const todayDateString = new Date().toISOString().split("T")[0];
+
+      // Map profiles into reactive component tracking status objects safely
       const initializedRecords = (students || []).map((student: any) => ({
-        id: student.id,
-        student_id: student.id,
-        student_name: student.name || "Unknown Student",
-        status: "Present" as const, // Default state anchor
-        date: new Date().toISOString().split("T")[0],
+        id: student.id || "N/A",
+        student_id: student.id || "N/A",
+        // Defensive fallback text strings to guard against empty cells or null values
+        student_name: student.name || "Untitled Profile Student",
+        status: "Present" as const, // Default starting anchor state
+        date: todayDateString,
       }));
 
       setRecords(initializedRecords);
     } catch (err) {
-      console.error("Error building attendance sheet:", err);
+      console.error("Error building attendance sheet roster grid:", err);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchAttendanceRoster();
+    const loadAttendanceRoster = async () => {
+      await Promise.resolve();
+      await fetchAttendanceRoster();
+    };
+
+    void loadAttendanceRoster();
   }, []);
 
   // Local Memory Status Toggle Controller
@@ -141,7 +150,7 @@ export default function DailyAttendancePage() {
         <button
           type="button"
           onClick={handleSaveAttendance}
-          disabled={isSaving || records.length === 0}
+          disabled={!!isSaving || records.length === 0}
           className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-xl font-semibold text-sm flex items-center gap-2 transition-all shadow-lg shadow-blue-600/10 cursor-pointer disabled:opacity-40 shrink-0 self-start sm:self-center"
         >
           <Save className="w-4 h-4" />
